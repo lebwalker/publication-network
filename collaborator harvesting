@@ -1,0 +1,34 @@
+# Creating a new CSV format where each row represents an individual author of a publication
+
+# Function to create rows for each author of a publication
+def create_rows_for_publication(publication, authors):
+    rows = []
+    for author in authors:
+        row = {
+            "Title": publication["Title"],
+            "DOI": publication["DOI"],
+            "Year": publication["Year"],
+            "Author First Name": author["First Name"],
+            "Author Last Name": author["Last Name"],
+            "Author Affiliation": author["Affiliation"]
+        }
+        rows.append(row)
+    return rows
+
+# Generate rows for each publication
+all_rows = []
+for publication in publications_data:
+    publication_rows = create_rows_for_publication(publication, publication["Authors"])
+    all_rows.extend(publication_rows)
+
+# Define the file path for the new CSV
+individual_authors_csv_path = '/mnt/data/Publications_With_Individual_Authors_2023.csv'
+
+# Write the new data to a CSV file
+with open(individual_authors_csv_path, 'w', newline='', encoding='utf-8') as file:
+    fieldnames = ["Title", "DOI", "Year", "Author First Name", "Author Last Name", "Author Affiliation"]
+    writer = csv.DictWriter(file, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(all_rows)
+
+individual_authors_csv_path
